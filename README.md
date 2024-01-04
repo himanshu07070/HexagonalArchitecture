@@ -40,8 +40,8 @@ The application is meticulously organized to embody the principles of Hexagonal 
 - cd hexagonal-architecture-go
 
 3: Build and run the application:
-- go run app/main.go(1st terminal- start the backend server)
-- redis-server(2nd terminal- start the redisdatabase server)
+- go run app/main.go (1st terminal- start the backend server)
+- redis-server (2nd terminal- start the redisdatabase server)
 
 4: Open Postman( To request api)
 - Mention this in the url - http://localhost:8080/upload
