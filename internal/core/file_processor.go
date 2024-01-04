@@ -24,7 +24,7 @@ func (fp *FileProcessor) ProcessFile(fileName string, file io.Reader) (int64, er
 	//check if file is already present in database
 	fileSize, err := fp.databasePort.Retrieve(fileName)
 	if err == nil {
-		fp.loggerPort.Info("File already present in database")
+		fp.loggerPort.Info("File already present in the database", "fileName", fileName)
 		return fileSize, nil
 	}
 	fileInfo, err := io.ReadAll(file)
@@ -37,16 +37,18 @@ func (fp *FileProcessor) ProcessFile(fileName string, file io.Reader) (int64, er
 	}
 	// Check if the file has a valid extension
 	if !isValidFileExtension(fileName) {
+		fp.loggerPort.Error("Invalid file extension", "fileName", fileName)
 		return 0, errors.New("invalid file extension")
 	}
 	fileSize = int64(len(fileInfo))
 
 	err = fp.databasePort.Store(fileName, fileSize)
 	if err != nil {
+		fp.loggerPort.Error("Error storing file in the database", "fileName", fileName, "error", err.Error())
 		return 0, err
 	}
 
-	fp.loggerPort.Info("File processed successfully")
+	fp.loggerPort.Info("File processed successfully", "fileName", fileName, "fileSize", fileSize)
 
 	return fileSize, nil
 }
